@@ -16,15 +16,14 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t nodeapp .
-      - docker tag nodeapp:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker tag nodeapp:latest $REPOSITORY_URI:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"deploy-docker-aws","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"deploy-docker-aws","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
